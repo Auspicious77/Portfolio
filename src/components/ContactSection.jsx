@@ -13,28 +13,52 @@ import { useState } from "react";
 export const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setIsSubmitting(true);
+
+  //   const form = e.target;
+  //   const name = form.name.value;
+  //   const email = form.email.value;
+  //   const message = form.message.value;
+
+  //   const subject = encodeURIComponent(`Message from ${name}`);
+  //   const body = encodeURIComponent(
+  //     `Hi Elisha,\n\nYou have a new message from:\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+  //   );
+
+  //   // Open Gmail compose in a new tab
+  //   window.open(
+  //     `https://mail.google.com/mail/?view=cm&fs=1&to=helixakin2020@gmail.com&su=${subject}&body=${body}`,
+  //     "_blank"
+  //   );
+
+  //   setIsSubmitting(false);
+  // };
+
 const handleSubmit = (e) => {
   e.preventDefault();
   setIsSubmitting(true);
 
   const form = e.target;
-  const name = form.name.value;
-  const email = form.email.value;
-  const message = form.message.value;
+  const name = form.name.value.trim();
+  const email = form.email.value.trim();
+  const message = form.message.value.trim();
 
+  // Subject should be "Message from <name>"
   const subject = encodeURIComponent(`Message from ${name}`);
+
+  // Body should contain the actual message + email for reference
   const body = encodeURIComponent(
-    `Hi Elisha,\n\nYou have a new message from:\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+    `You have a new message.\n\nFrom: ${name} (${email})\n\nMessage:\n${message}`
   );
 
-  // Open Gmail compose in a new tab
-  window.open(
-    `https://mail.google.com/mail/?view=cm&fs=1&to=helixakin2020@gmail.com&su=${subject}&body=${body}`,
-    "_blank"
-  );
+  // ✅ Open the user's default email client
+  window.location.href = `mailto:elishaibukun@gmail.com?subject=${subject}&body=${body}`;
 
   setIsSubmitting(false);
 };
+
 
 
   return (
@@ -171,6 +195,8 @@ const handleSubmit = (e) => {
               Send Message
               <Send size={16} />
             </button>
+
+
           </form>
         </div>
       </div>

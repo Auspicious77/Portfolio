@@ -129,16 +129,16 @@ export const ProjectsSection = () => {
           ))}
         </div>
 
-          <div className="text-center mt-12">
+        <div className="text-center mt-12">
           <a
             className="cosmic-button w-fit flex items-center mx-auto gap-2"
-            target="_blank"
-            href="https://github.com/auspicious77"
+            href="/projects"
           >
-           View all <ArrowRight size={16} />
+            View all <ArrowRight size={16} />
           </a>
         </div>
-     
+
+
 
         <div className="text-center mt-12">
           <a
