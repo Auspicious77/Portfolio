@@ -6,6 +6,8 @@ import { Footer } from "../components/Footer";
 import { Apple, ArrowRight, Github } from "lucide-react";
 import { MdAndroid } from "react-icons/md";
 import { projects } from "../lib/projectData";
+import { SiAppstore } from "react-icons/si";
+import { FaApple } from "react-icons/fa";
 
 
 export const ProjectsPage = () => {
@@ -86,9 +88,11 @@ export const ProjectsPage = () => {
                             rel="noopener noreferrer"
                             className="text-foreground/80 hover:text-primary transition-colors duration-300"
                           >
-                            <Apple size={20} />
+                            <FaApple size={20} />
                           </a>
                         )}
+
+
                         {project.androidUrl && (
                           <a
                             href={project.androidUrl}

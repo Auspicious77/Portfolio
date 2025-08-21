@@ -1,4 +1,5 @@
 import { Apple, Smartphone, ArrowRight, ExternalLink, Github } from "lucide-react";
+import { FaApple } from "react-icons/fa";
 import { MdAndroid, MdPhoneAndroid } from "react-icons/md";
 
 
@@ -108,7 +109,7 @@ export const ProjectsSection = () => {
                         rel="noopener noreferrer"
                         className="text-foreground/80 hover:text-primary transition-colors duration-300"
                       >
-                        <Apple size={20} />
+                        <FaApple size={20} />
                       </a>
                     )}
 
@@ -130,7 +131,7 @@ export const ProjectsSection = () => {
         </div>
 
         <div className="inset-0 flex flex-col sm:flex-row items-center justify-center gap-4 px-4 mt-15">
-             <a
+          <a
             className="flex items-center justify-center gap-2 px-15 py-3 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors duration-300 text-base sm:text-lg"
             href="/projects#projects"
           >
@@ -145,7 +146,7 @@ export const ProjectsSection = () => {
             Check My Github <ArrowRight size={16} />
           </a>
 
-       
+
         </div>
 
 
