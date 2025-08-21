@@ -129,9 +129,32 @@ export const ProjectsSection = () => {
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        <div className="inset-0 flex flex-col sm:flex-row items-center justify-center gap-4 px-4 mt-15">
+             <a
+            className="flex items-center justify-center gap-2 px-15 py-3 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors duration-300 text-base sm:text-lg"
+            href="/projects#projects"
+          >
+            View all <ArrowRight size={16} />
+          </a>
+
           <a
-            className="cosmic-button w-fit flex items-center mx-auto gap-2"
+            className="flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300 text-base sm:text-lg"
+            target="_blank"
+            href="https://github.com/auspicious77"
+          >
+            Check My Github <ArrowRight size={16} />
+          </a>
+
+       
+        </div>
+
+
+
+
+        {/* <div className="text-center mt-12">
+          <a
+            // className="cosmic-button w-fit flex items-center mx-auto gap-2"
+            className="cosmic-button mx-auto gap-2"
             href="/projects#projects"
           >
             View all <ArrowRight size={16} />
@@ -142,13 +165,14 @@ export const ProjectsSection = () => {
 
         <div className="text-center mt-12">
           <a
-            className="cosmic-button w-fit flex items-center mx-auto gap-2"
+            // className="cosmic-button w-fit flex items-center mx-auto gap-2"
+            className="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300"
             target="_blank"
             href="https://github.com/auspicious77"
           >
             Check My Github <ArrowRight size={16} />
           </a>
-        </div>
+        </div> */}
       </div>
     </section>
   );
