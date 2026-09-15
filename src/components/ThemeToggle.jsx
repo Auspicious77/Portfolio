@@ -1,54 +1,32 @@
 import { Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 export const ThemeToggle = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // useEffect(() => {
-  //   const storedTheme = localStorage.getItem("theme");
-  //   if (storedTheme === "dark") {
-  //     setIsDarkMode(true);
-  //     document.documentElement.classList.add("dark");
-  //   } else {
-  //     localStorage.setItem("theme", "light");
-  //     setIsDarkMode(false);
-  //   }
-  // }, []);
-
-  useEffect(() => {
-  const storedTheme = localStorage.getItem("theme");
-
-  if (storedTheme === "dark" || !storedTheme) {
-    // If dark OR nothing is stored (first visit), use dark mode
-    document.documentElement.classList.add("dark");
-    localStorage.setItem("theme", "dark");
-    setIsDarkMode(true);
-  } else {
-    document.documentElement.classList.remove("dark");
-    setIsDarkMode(false);
-  }
-}, []);
+  // index.html applies the theme before first paint (dark by default)
+  const [isDarkMode, setIsDarkMode] = useState(() =>
+    document.documentElement.classList.contains("dark")
+  );
 
   const toggleTheme = () => {
-    if (isDarkMode) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      setIsDarkMode(false);
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      setIsDarkMode(true);
+    const nextIsDark = !isDarkMode;
+    document.documentElement.classList.toggle("dark", nextIsDark);
+    try {
+      localStorage.setItem("theme", nextIsDark ? "dark" : "light");
+    } catch {
+      // Storage can be unavailable (e.g. private mode); the toggle still works
     }
+    setIsDarkMode(nextIsDark);
   };
 
   return (
     <button
       onClick={toggleTheme}
-     className={cn(
-    "fixed top-3 right-1 z-50 p-2 rounded-full transition-colors duration-300",
-    "focus:outline-none"
-  )}
+      aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+      className={cn(
+        "fixed top-3 right-1 z-50 p-2 rounded-full transition-colors duration-300",
+        "focus:outline-none"
+      )}
     >
       {isDarkMode ? (
         <Sun className="h-6 w-6 text-yellow-300" />

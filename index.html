@@ -1,10 +1,22 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Dark is the default; only switch to light if the visitor chose it.
+      try {
+        if (localStorage.getItem("theme") === "light") {
+          document.documentElement.classList.remove("dark");
+        }
+      } catch (e) {}
+    </script>
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Elisha's Porfolio</title>
+    <meta
+      name="description"
+      content="Elisha Oderinde — Fullstack developer building web apps, iOS & Android mobile apps, and scalable backends."
+    />
+    <title>Elisha Oderinde | Fullstack Developer</title>
   </head>
   <body>
     <div id="root"></div>

@@ -1,4 +1,5 @@
 import {
+  Github,
   Instagram,
   Linkedin,
   Mail,
@@ -7,59 +8,77 @@ import {
   Send,
   Twitter,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
+
+const CONTACT_EMAIL = "elishaibukun@gmail.com";
+// FormSubmit relays form posts straight to the inbox, no backend needed.
+const FORM_ENDPOINT = `https://formsubmit.co/ajax/${CONTACT_EMAIL}`;
+
+const socials = [
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/elisha-oderinde-138b7b195/",
+    Icon: Linkedin,
+  },
+  { label: "GitHub", href: "https://github.com/auspicious77", Icon: Github },
+  { label: "X (Twitter)", href: "https://x.com/akinkunmi_i", Icon: Twitter },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/auspitech/",
+    Icon: Instagram,
+  },
+];
 
 export const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   setIsSubmitting(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  //   const form = e.target;
-  //   const name = form.name.value;
-  //   const email = form.email.value;
-  //   const message = form.message.value;
+    const form = e.currentTarget;
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const message = form.message.value.trim();
 
-  //   const subject = encodeURIComponent(`Message from ${name}`);
-  //   const body = encodeURIComponent(
-  //     `Hi Elisha,\n\nYou have a new message from:\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-  //   );
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+          _subject: `Portfolio message from ${name}`,
+          _template: "table",
+          _honey: form._honey.value,
+        }),
+      });
+      const result = await response.json();
 
-  //   // Open Gmail compose in a new tab
-  //   window.open(
-  //     `https://mail.google.com/mail/?view=cm&fs=1&to=helixakin2020@gmail.com&su=${subject}&body=${body}`,
-  //     "_blank"
-  //   );
+      if (!response.ok || String(result.success) !== "true") {
+        throw new Error(result.message || "Message could not be sent");
+      }
 
-  //   setIsSubmitting(false);
-  // };
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-
-  const form = e.target;
-  const name = form.name.value.trim();
-  const email = form.email.value.trim();
-  const message = form.message.value.trim();
-
-  // Subject should be "Message from <name>"
-  const subject = encodeURIComponent(`Message from ${name}`);
-
-  // Body should contain the actual message + email for reference
-  const body = encodeURIComponent(
-    `You have a new message.\n\nFrom: ${name} (${email})\n\nMessage:\n${message}`
-  );
-
-  // ✅ Open the user's default email client
-  window.location.href = `mailto:elishaibukun@gmail.com?subject=${subject}&body=${body}`;
-
-  setIsSubmitting(false);
-};
-
-
+      form.reset();
+      toast({
+        title: "Message sent!",
+        description: "Thanks for reaching out — I'll get back to you soon.",
+      });
+    } catch (error) {
+      // Surface FormSubmit's reason (e.g. the form still needs activation)
+      toast({
+        title: "Message not sent",
+        description: `${error.message}. You can also email me directly at ${CONTACT_EMAIL}.`,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section id="contact" className="py-24 px-4 relative bg-secondary/30">
@@ -69,8 +88,9 @@ const handleSubmit = (e) => {
         </h2>
 
         <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-          Have a project in mind or want to collaborate? Feel free to reach out.
-          I'm always open to discussing new opportunities.
+          Need a website, a mobile app, or a backend to power them? Have a
+          project in mind or want to collaborate? Feel free to reach out — I’m
+          always open to discussing new opportunities.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -82,7 +102,7 @@ const handleSubmit = (e) => {
                 <div className="p-3 rounded-full bg-primary/10">
                   <Mail className="h-6 w-6 text-primary" />
                 </div>
-                <div>
+                <div className="text-left">
                   <h4 className="font-medium">Email</h4>
                   <a
                     href="mailto:elishaibukun@gmail.com"
@@ -96,7 +116,7 @@ const handleSubmit = (e) => {
                 <div className="p-3 rounded-full bg-primary/10">
                   <Phone className="h-6 w-6 text-primary" />
                 </div>
-                <div>
+                <div className="text-left">
                   <h4 className="font-medium">Phone</h4>
                   <a
                     href="tel:+2348148645867"
@@ -110,7 +130,7 @@ const handleSubmit = (e) => {
                 <div className="p-3 rounded-full bg-primary/10">
                   <MapPin className="h-6 w-6 text-primary" />
                 </div>
-                <div>
+                <div className="text-left">
                   <h4 className="font-medium">Location</h4>
                   <p className="text-muted-foreground">Lagos, Nigeria</p>
                 </div>
@@ -119,29 +139,41 @@ const handleSubmit = (e) => {
 
             <div className="pt-8">
               <h4 className="font-medium mb-4">Connect With Me</h4>
-              <div className="flex space-x-4 justify-center">
-                <a
-                  href="https://www.linkedin.com/in/elisha-oderinde-138b7b195/"
-                  target="_blank"
-                >
-                  <Linkedin />
-                </a>
-                <a href="https://x.com/akinkunmi_i" target="_blank">
-                  <Twitter />
-                </a>
-                <a href="https://www.instagram.com/auspitech/" target="_blank">
-                  <Instagram />
-                </a>
+              <div className="flex gap-4 justify-center">
+                {socials.map(({ label, href, Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="p-3 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+                  >
+                    <Icon className="h-5 w-5" />
+                  </a>
+                ))}
               </div>
             </div>
           </div>
 
           {/* Form */}
           <form
-            className="bg-card p-8 rounded-lg shadow-xs space-y-6"
+            className="bg-card p-8 rounded-lg shadow-xs space-y-6 text-left"
             onSubmit={handleSubmit}
           >
-            <h3 className="text-2xl font-semibold mb-6">Send a Message</h3>
+            <h3 className="text-2xl font-semibold mb-6 text-center">
+              Send a Message
+            </h3>
+
+            {/* Honeypot: hidden from people, filled in by spam bots */}
+            <input
+              type="text"
+              name="_honey"
+              tabIndex={-1}
+              autoComplete="off"
+              className="hidden"
+              aria-hidden="true"
+            />
 
             <div>
               <label htmlFor="name" className="block text-sm font-medium mb-2">
@@ -179,6 +211,7 @@ const handleSubmit = (e) => {
                 id="message"
                 name="message"
                 required
+                rows={5}
                 className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                 placeholder="Hello, I'd like to talk about..."
               />
@@ -187,16 +220,11 @@ const handleSubmit = (e) => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={cn(
-                "cosmic-button w-full flex items-center justify-center gap-2"
-              )}
-              onClick={handleSubmit}
+              className="cosmic-button w-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:pointer-events-none"
             >
-              Send Message
+              {isSubmitting ? "Sending..." : "Send Message"}
               <Send size={16} />
             </button>
-
-
           </form>
         </div>
       </div>
